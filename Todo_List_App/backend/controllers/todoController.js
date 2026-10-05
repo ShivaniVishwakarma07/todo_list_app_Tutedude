@@ -30,7 +30,26 @@ const getTodo = async (req, res, next) => {
 
 const createTodo = async (req, res, next) => {
   try {
-    const todo = await todoService.createTodo(req.body);
+    const { title, description, status } = req.body;
+
+    if (!title || !title.trim()) {
+      return res.status(400).json({
+        message: "Title is required",
+      });
+    }
+
+    if (status && !["pending", "completed"].includes(status)) {
+      return res.status(400).json({
+        message: "Status must be pending or completed",
+      });
+    }
+
+    const todo = await todoService.createTodo({
+      title: title.trim(),
+      description: description?.trim() || "",
+      status: status || "pending",
+    });
+
     res.status(201).json(todo);
   } catch (error) {
     next(error);
