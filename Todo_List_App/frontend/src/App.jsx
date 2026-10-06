@@ -94,6 +94,11 @@ function App() {
 
       const newStatus = todo.status === "completed" ? "pending" : "completed";
 
+      if (!["pending", "completed"].includes(newStatus)) {
+        setError("Status must be pending or completed");
+        return;
+      }
+
       const response = await updateTodoStatus(todo._id, newStatus);
 
       setTodos((currentTodos) =>
