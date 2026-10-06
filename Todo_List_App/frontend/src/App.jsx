@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
-import { createTodo, getTodos } from "./api/todoApi";
+import { createTodo, getTodos, updateTodo } from "./api/todoApi";
 
 function App() {
   const [todos, setTodos] = useState([]);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
+  const [editingId, setEditingId] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
@@ -37,17 +38,47 @@ function App() {
     try {
       setError("");
 
-      const response = await createTodo({
-        title,
-        description,
-      });
+      if (editingId) {
+        const response = await updateTodo(editingId, {
+          title,
+          description,
+        });
 
-      setTodos((currentTodos) => [response.data, ...currentTodos]);
+        setTodos((currentTodos) =>
+          currentTodos.map((todo) =>
+            todo._id === editingId ? response.data : todo,
+          ),
+        );
+
+        setEditingId(null);
+      } else {
+        const response = await createTodo({
+          title,
+          description,
+        });
+
+        setTodos((currentTodos) => [response.data, ...currentTodos]);
+      }
+
       setTitle("");
       setDescription("");
     } catch (error) {
-      setError(error.response?.data?.message || "Failed to create todo");
+      setError(error.response?.data?.message || "Failed to save todo");
     }
+  };
+
+  const handleEdit = (todo) => {
+    setEditingId(todo._id);
+    setTitle(todo.title);
+    setDescription(todo.description);
+    setError("");
+  };
+
+  const handleCancelEdit = () => {
+    setEditingId(null);
+    setTitle("");
+    setDescription("");
+    setError("");
   };
 
   return (
@@ -68,7 +99,13 @@ function App() {
           onChange={(event) => setDescription(event.target.value)}
         />
 
-        <button type="submit">Add Todo</button>
+        <button type="submit">{editingId ? "Update Todo" : "Add Todo"}</button>
+
+        {editingId && (
+          <button type="button" onClick={handleCancelEdit}>
+            Cancel
+          </button>
+        )}
       </form>
 
       {loading && <p>Loading...</p>}
@@ -83,6 +120,8 @@ function App() {
             <h3>{todo.title}</h3>
             <p>{todo.description}</p>
             <p>Status: {todo.status}</p>
+
+            <button onClick={() => handleEdit(todo)}>Edit</button>
           </div>
         ))}
       </div>
