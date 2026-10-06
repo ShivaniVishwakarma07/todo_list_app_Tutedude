@@ -5,7 +5,7 @@
 body {
   margin: 0;
   font-family: Arial, sans-serif;
-  background: #f5f5f5;
+  background: #8abacc;
 }
 
 .app {
@@ -60,4 +60,78 @@ button {
 
 .search input {
   flex: 1;
+}
+
+button {
+  background: #2f6f8f;
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #24566f;
+}
+
+.todo button {
+  margin-right: 10px;
+}
+
+.todo button:last-child {
+  margin-right: 0;
+}
+
+.edit-btn {
+  background: #90cfa3;
+  color: #1f4d2b;
+}
+
+.edit-btn:hover {
+  background: #78bc8e;
+}
+
+.complete-btn {
+  background: #4caf50;
+  color: white;
+}
+
+.complete-btn:hover {
+  background: #3d9140;
+}
+
+.pending-btn {
+  background: #f2c94c;
+  color: #5c4800;
+}
+
+.pending-btn:hover {
+  background: #dfb637;
+}
+
+.delete-btn {
+  background: #dc4c4c;
+  color: white;
+}
+
+.delete-btn:hover {
+  background: #bd3636;
+}
+form button[type="submit"] {
+  background: #2f6f8f;
+  color: white;
+}
+
+form button[type="submit"]:hover {
+  background: #24566f;
+}
+
+.search button {
+  background: #4f91b0;
+  color: white;
+}
+
+.search button:hover {
+  background: #3d7d9b;
 }

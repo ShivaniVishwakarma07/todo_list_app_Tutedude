@@ -178,13 +178,25 @@ function App() {
             <p>{todo.description}</p>
             <p>Status: {todo.status}</p>
 
-            <button onClick={() => handleEdit(todo)}>Edit</button>
+            <button className="edit-btn" onClick={() => handleEdit(todo)}>
+              Edit
+            </button>
 
-            <button onClick={() => handleStatusChange(todo)}>
+            <button
+              className={
+                todo.status === "completed" ? "pending-btn" : "complete-btn"
+              }
+              onClick={() => handleStatusChange(todo)}
+            >
               {todo.status === "completed" ? "Mark Pending" : "Mark Completed"}
             </button>
 
-            <button onClick={() => handleDelete(todo._id)}>Delete</button>
+            <button
+              className="delete-btn"
+              onClick={() => handleDelete(todo._id)}
+            >
+              Delete
+            </button>
           </div>
         ))}
       </div>
