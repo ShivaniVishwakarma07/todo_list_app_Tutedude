@@ -11,6 +11,7 @@ function App() {
   const [todos, setTodos] = useState([]);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
+  const [search, setSearch] = useState("");
   const [editingId, setEditingId] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -20,7 +21,7 @@ function App() {
       setLoading(true);
       setError("");
 
-      const response = await getTodos();
+      const response = await getTodos(search);
       setTodos(response.data);
     } catch (error) {
       setError("Failed to load todos");
@@ -145,6 +146,19 @@ function App() {
           </button>
         )}
       </form>
+
+      <div className="search">
+        <input
+          type="text"
+          placeholder="Search todos"
+          value={search}
+          onChange={(event) => setSearch(event.target.value)}
+        />
+
+        <button type="button" onClick={fetchTodos}>
+          Search
+        </button>
+      </div>
 
       {loading && <p>Loading...</p>}
 

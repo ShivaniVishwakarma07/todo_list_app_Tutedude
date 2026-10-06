@@ -52,3 +52,12 @@ button {
   margin-top: 15px;
   border-radius: 8px;
 }
+.search {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.search input {
+  flex: 1;
+}
