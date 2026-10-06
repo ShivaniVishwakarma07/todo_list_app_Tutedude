@@ -1,5 +1,11 @@
 import { useEffect, useState } from "react";
-import { createTodo, getTodos, updateTodo } from "./api/todoApi";
+import {
+  createTodo,
+  getTodos,
+  updateTodo,
+  updateTodoStatus,
+  deleteTodo,
+} from "./api/todoApi";
 
 function App() {
   const [todos, setTodos] = useState([]);
@@ -81,6 +87,38 @@ function App() {
     setError("");
   };
 
+  const handleStatusChange = async (todo) => {
+    try {
+      setError("");
+
+      const newStatus = todo.status === "completed" ? "pending" : "completed";
+
+      const response = await updateTodoStatus(todo._id, newStatus);
+
+      setTodos((currentTodos) =>
+        currentTodos.map((item) =>
+          item._id === todo._id ? response.data : item,
+        ),
+      );
+    } catch (error) {
+      setError(error.response?.data?.message || "Failed to update status");
+    }
+  };
+
+  const handleDelete = async (id) => {
+    try {
+      setError("");
+
+      await deleteTodo(id);
+
+      setTodos((currentTodos) =>
+        currentTodos.filter((todo) => todo._id !== id),
+      );
+    } catch (error) {
+      setError(error.response?.data?.message || "Failed to delete todo");
+    }
+  };
+
   return (
     <div className="app">
       <h1>Todo List</h1>
@@ -122,6 +160,12 @@ function App() {
             <p>Status: {todo.status}</p>
 
             <button onClick={() => handleEdit(todo)}>Edit</button>
+
+            <button onClick={() => handleStatusChange(todo)}>
+              {todo.status === "completed" ? "Mark Pending" : "Mark Completed"}
+            </button>
+
+            <button onClick={() => handleDelete(todo._id)}>Delete</button>
           </div>
         ))}
       </div>
